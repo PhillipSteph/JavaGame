@@ -10,22 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="faf8c715-be9c-455a-98f0-834872f76106" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/NoahsGayAwakening.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/game.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bullet.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bullets.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cock.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cock2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cock3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/game.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/noah.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/GamePanel.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/KeyHandler.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/Main.java" afterDir="false" />
@@ -37,6 +21,7 @@
       <change afterPath="$PROJECT_DIR$/src/main/enemy.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/item.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/noah.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +156,7 @@
       <workItem from="1716368814086" duration="1181000" />
       <workItem from="1716371884713" duration="6166000" />
       <workItem from="1716390345406" duration="1077000" />
-      <workItem from="1716443005029" duration="407000" />
+      <workItem from="1716443005029" duration="5704000" />
     </task>
     <servers />
   </component>

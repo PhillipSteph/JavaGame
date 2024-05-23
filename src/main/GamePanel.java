@@ -19,9 +19,11 @@ public class GamePanel extends JPanel implements Runnable {
     int counter=1;
     boolean cnt = true;
     int points = 0;
-    boolean bulletexists = false;
-    int bulletdir = 0;
-    bullet b1 = new bullet(-50,-50,10);
+    bullet b1 = new bullet(-50,-50,10, false);
+    bullet b2 = new bullet(-50,-50,10, false);
+    bullet b3 = new bullet(-50,-50,10, false);
+    bullet b4 = new bullet(-50,-50,10, false);
+    bullet bulletarray[] = {b1,b2,b3,b4};
     int b1dx = 0;
     int b1dy = 0;
 
@@ -37,6 +39,10 @@ public class GamePanel extends JPanel implements Runnable {
     BufferedImage bulletss = ImageIO.read(new File(System.getProperty("user.dir")+"/bullets.png"));
     BufferedImage fire = ImageIO.read(new File(System.getProperty("user.dir")+"/fire.png"));
     BufferedImage grass = ImageIO.read(new File(System.getProperty("user.dir")+"/grass.png"));
+    BufferedImage pointstext = ImageIO.read(new File(System.getProperty("user.dir")+"/points.png"));
+    BufferedImage highscoretext = ImageIO.read(new File(System.getProperty("user.dir")+"/highscore.png"));
+    BufferedImage healthtext = ImageIO.read(new File(System.getProperty("user.dir")+"/health.png"));
+    BufferedImage bulletstext = ImageIO.read(new File(System.getProperty("user.dir")+"/bulletstext.png"));
 
 
     Image resultingitemImage,resultingitem2Image,resultingitem3Image;
@@ -173,9 +179,11 @@ public class GamePanel extends JPanel implements Runnable {
             vecdy = y-playerY;
             wichtig = Math.sqrt(vecdx*vecdx+vecdy*vecdy);
         }
-        if(bulletexists){
-            b1.y = (int)(b1.y + (vecdy * b1.speed / wichtig ));
-            b1.x = (int)(b1.x + (vecdx * b1.speed / wichtig ));
+        for(int i=0;i<bulletarray.length;i++){
+            if(bulletarray[i].exists){
+                bulletarray[i].y = (int)(bulletarray[i].y + (vecdy * bulletarray[i].speed / wichtig ));
+                bulletarray[i].x = (int)(bulletarray[i].x + (vecdx * bulletarray[i].speed / wichtig ));
+            }
         }
         boolean gethoter = false;
 for(int i=0;i<3;i++){
@@ -207,16 +215,22 @@ for(int i=0;i<3;i++){
                 respawnitem(itemarr[i]);
             }
         }
-
-       for(int i=0;i<3;i++){
-           if(enemyarr[i].shown && (b1.x>=enemyarr[i].x-size && b1.x<=enemyarr[i].x+enemyarr[i].size-originalTileSIze) && (b1.y>=enemyarr[i].y-size && b1.y<=enemyarr[i].y+enemyarr[i].size)){
-               enemyarr[i].life--;
-               points+=counter;
-               b1.x = -100;
-               b1.y = -100;
-               bulletexists = false;
-           }
-       }
+        for(int j=0;j<bulletarray.length;j++){
+            if(bulletarray[j].x<=0 || bulletarray[j].x>=screenWidth || bulletarray[j].y<=0 || bulletarray[j].y>=screenHeight){
+                bulletarray[j].exists = false;
+            }
+        }
+        for(int j=0;j<bulletarray.length;j++){
+            for(int i=0;i<3;i++){
+                if(enemyarr[i].shown && bulletarray[j].exists && (bulletarray[j].x>=enemyarr[i].x-size && bulletarray[j].x<=enemyarr[i].x+enemyarr[i].size-originalTileSIze) && (bulletarray[j].y>=enemyarr[i].y-size && bulletarray[j].y<=enemyarr[i].y+enemyarr[i].size)){
+                    enemyarr[i].life--;
+                    points+=counter;
+                    bulletarray[i].x = -100;
+                    bulletarray[i].y = -100;
+                    bulletarray[j].exists = false;
+                }
+            }
+        }
        if(points>=50 && !gonestage2){
            for(int i=0;i<5;i++){
                possibleenemyarr[i][0]*=3;
@@ -252,12 +266,20 @@ for(int i=0;i<3;i++){
         }
     }
     public void shootbullet() {
-        if(b1.x>=screenWidth || b1.y >=screenWidth || b1.x<=0 || b1.y<=0) bulletexists = false;
-        if (bulletexists == false) {
+        bullet curbul = null;
+        for(int j = 0;j<bulletarray.length;j++){
+            if(!bulletarray[j].exists){
+                curbul = bulletarray[j];
+                break;
+            }
+        }
+        if(curbul==null) return;
+        if(curbul.x>=screenWidth || curbul.y >=screenWidth || curbul.x<=0 || curbul.y<=0) curbul.exists = false;
+        if (curbul.exists == false) {
             bullets--;
-            b1.y = playerY;
-            b1.x = playerX;
-            bulletexists = true;
+            curbul.y = playerY;
+            curbul.x = playerX;
+            curbul.exists = true;
         }
     }
     public void respawnitem(item currentitem){
@@ -449,8 +471,6 @@ for(int i=0;i<3;i++){
         drawarray(g);
         g.setColor(Color.white);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g2.drawString("Punkte:",screenWidth+4*tileSize,tileSize*2);
-        g2.drawString("Highscore:",screenWidth+4*tileSize,tileSize*4);
         g.drawRect(screenWidth+4*tileSize,(int)(tileSize*2.2),tileSize*2,tileSize);
         g.drawRect(screenWidth+4*tileSize,(int)(tileSize*4.2),tileSize*2,tileSize);
         g.setColor(Color.black);
@@ -486,10 +506,14 @@ for(int i=0;i<3;i++){
             g.drawImage(magazine,(int)(screenWidth+(tileSize*2.25)),screenHeight-(tileSize*2)-(i*(tileSize*6/7)),null);
         }
 
+    for(int j=0;j<bulletarray.length;j++){
+        if(bulletarray[j].exists){
+            Image resultingshootImage = shootimage.getScaledInstance(size, size, Image.SCALE_DEFAULT); //get Sprite
+            BufferedImage outputshootImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB); // ''
+            g.drawImage(resultingshootImage,bulletarray[j].x,bulletarray[j].y,null);
+        }
+    }
 
-        Image resultingshootImage = shootimage.getScaledInstance(size, size, Image.SCALE_DEFAULT); //get Sprite
-        BufferedImage outputshootImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB); // ''
-        g.drawImage(resultingshootImage,b1.x,b1.y,null);
 
         g.drawImage(resultingitemImage,itemarr[0].x,itemarr[0].y,null);
         g.drawImage(resultingitem2Image,itemarr[1].x,itemarr[1].y,null);
